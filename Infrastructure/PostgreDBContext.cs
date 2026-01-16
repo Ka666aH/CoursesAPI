@@ -16,6 +16,8 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //here Полностью расписать конфигурацию?
+            modelBuilder.Entity<UserProfile>().HasNoKey();
             modelBuilder.Entity<Enrollment>().HasKey(e => new { e.UserId, e.CourseId});
         }
     }
