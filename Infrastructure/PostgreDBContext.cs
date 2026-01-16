@@ -5,6 +5,8 @@ namespace Infrastructure
 {
     public class PostgreDBContext : DbContext
     {
+        public PostgreDBContext(DbContextOptions<PostgreDBContext> options) : base(options) { }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Module> Modules { get; set; }
