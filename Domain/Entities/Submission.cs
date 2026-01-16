@@ -2,9 +2,9 @@
 {
     public class Submission
     {
-        public Guid Id { get; } = Guid.NewGuid();
-        public required Assignment Assignment { get; set; }
-        public required User User { get; set; }
-        public required DateTime DateTime { get; set; }
+        public Guid Id { get; set; } 
+        public Guid AssignmentId { get; set; }
+        public Guid UserId { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Module
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public Guid CourseId { get; init; }
         public int Number { get;  set; }
         public string Title { get;  set; } = string.Empty;

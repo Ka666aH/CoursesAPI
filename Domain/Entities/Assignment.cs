@@ -2,8 +2,8 @@
 {
     public class Assignment
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public required Module Module { get; set; }
-        public required string Title{ get; set; }
+        public Guid Id { get; set; }
+        public Guid ModuleId { get; set; }
+        public string Title{ get; set; } = string.Empty;
     }
 }

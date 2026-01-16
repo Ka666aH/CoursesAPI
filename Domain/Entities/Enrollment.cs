@@ -2,8 +2,8 @@
 {
     public class Enrollment
     {
-        public required User User { get; set; }
-        public required Course Course { get; set; }
-        public required DateOnly Date { get; set; }
+        public Guid UserId { get; set; }
+        public Guid CourseId { get; set; }
+        public DateOnly Date { get; set; }
     }
 }
