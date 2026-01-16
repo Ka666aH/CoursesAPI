@@ -1,0 +1,27 @@
+﻿version: '3.8'
+services:
+  app:
+    image: your-dockerhub/app:latest
+    environment:
+      CONNECTION_STRING: >
+        Host=${POSTGRESQL_HOST};
+        Port=${POSTGRESQL_PORT};
+        Database=${POSTGRESQL_DB};
+        Username=${POSTGRESQL_USER};
+        Password=${POSTGRESQL_PASSWORD}
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USER}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
