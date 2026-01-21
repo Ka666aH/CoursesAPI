@@ -6,7 +6,7 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
-        public List<Guid> AuthorIds { get; set; } = [];
+        public List<Authorship> Authors { get; set; } = [];
         public List<Module> Modules { get; set; } = [];
     }
 }
