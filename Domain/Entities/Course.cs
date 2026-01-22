@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
     public class Course
     {
