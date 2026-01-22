@@ -10,7 +10,7 @@ namespace Infrastructure.Configurations
             builder.HasKey(c => c.Id);
 
             //builder.HasMany(c => c.Authors).WithOne(a => a.Course).HasForeignKey(a => a.CourseId);
-            builder.HasMany(c => c.Modules).WithOne().HasForeignKey(m => m.CourseId);
+            builder.HasMany(c => c.Modules).WithOne(m => m.Course).HasForeignKey(m => m.CourseId);
         }
     }
 }
