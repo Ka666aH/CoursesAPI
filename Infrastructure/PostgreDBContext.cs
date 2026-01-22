@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Infrastructure.Configurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
@@ -17,9 +18,15 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //here Полностью расписать конфигурацию?
-            modelBuilder.Entity<UserProfile>().HasNoKey();
-            modelBuilder.Entity<Enrollment>().HasKey(e => new { e.UserId, e.CourseId});
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new AuthorshipConfiguration());
+            modelBuilder.ApplyConfiguration(new CourseConfiguration());
+            modelBuilder.ApplyConfiguration(new ModuleConfiguration());
+            modelBuilder.ApplyConfiguration(new AssignmentsConfiguration());
+            modelBuilder.ApplyConfiguration(new SubmissionConfiguration());
+            modelBuilder.ApplyConfiguration(new EnrollmentConfiguration());
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 
