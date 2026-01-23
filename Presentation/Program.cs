@@ -1,10 +1,13 @@
+using Application.Interfaces;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
+
 builder.Services.AddDbContext<PostgreDBContext>
     (
     options =>
@@ -13,8 +16,13 @@ builder.Services.AddDbContext<PostgreDBContext>
         options.UseNpgsql(connectionString);
     }
     );
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<IUserRepository,UserRepository>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
