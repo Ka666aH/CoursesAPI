@@ -18,19 +18,19 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("add")]
-        public async Task<IResult> AddUser([FromBody] UserDTO userDTO, CancellationToken ct)
+        public async Task<IResult> AddUser([FromBody] UserCreateDTO dto, CancellationToken ct)
         {
 
             var user = new User
             {
-                Name = userDTO.Name,
-                Email = userDTO.Email,
+                Name = dto.Name,
+                Email = dto.Email,
                 Profile = new UserProfile
                 {
-                    FirstName = userDTO.FirstName,
-                    LastName = userDTO.LastName,
-                    BirthDate = userDTO.BirthDate,
-                    Status = userDTO.Status
+                    FirstName = dto.FirstName,
+                    LastName = dto.LastName,
+                    BirthDate = dto.BirthDate,
+                    Status = dto.Status
                 }
             };
             await _userRepository.AddUserAsync(user, ct);
@@ -53,30 +53,32 @@ namespace Presentation.Controllers
             return Results.Ok(ToUserResponseDTO(user));
         }
         [HttpPut("{userId}")]
-        public async Task<IResult> UpdateUser(Guid userId,[FromBody] UserDTO userDTO, CancellationToken ct)
+        public async Task<IResult> UpdateUser(Guid userId, [FromBody] UserUpdateDTO dto, CancellationToken ct)
         {
-            await _userRepository.UpdateUserAsync(new User
+            var user = await _userRepository.GetUserByIdAsync(userId, ct);
+            if (user == null) return Results.NotFound(user);
+
+            var newUserProfile = new UserProfile
             {
-                Id = userId,
-                Name = userDTO.Name,
-                Email = userDTO.Email,
-                Profile = new UserProfile
-                {
-                    FirstName = userDTO.FirstName,
-                    LastName = userDTO.LastName,
-                    BirthDate = userDTO.BirthDate,
-                    Status = userDTO.Status
-                }
-            }, ct);
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                BirthDate = dto.BirthDate,
+                Status = dto.Status,
+            };
+            await _userRepository.UpdateUserAsync(user, newUserProfile, ct);
+
             var changed = await _unitOfWork.SaveChangesAsync(ct);
             if (changed == 0) return Results.Problem("Failed to update user", statusCode: 500);
-            return Results.NoContent();
+            return Results.Ok(ToUserResponseDTO(user));
         }
         [HttpDelete("{userId}")]
         public async Task<IResult> DeleteUser(Guid userId, CancellationToken ct)
         {
-            var exitst = await _userRepository.DeleteUserByIdAsync(userId, ct);
-            if(!exitst) return Results.Problem("User is not exist", statusCode: 404);
+            var user = await _userRepository.GetUserByIdAsync(userId, ct);
+            if (user == null) return Results.NotFound(user);
+
+            await _userRepository.DeleteUserByIdAsync(user, ct);
+
             var changed = await _unitOfWork.SaveChangesAsync(ct);
             if (changed == 0) return Results.Problem("Failed to delete user", statusCode: 500);
             return Results.NoContent();
