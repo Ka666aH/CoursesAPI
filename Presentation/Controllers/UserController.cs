@@ -42,12 +42,27 @@ namespace Presentation.Controllers
         [HttpGet]
         public async Task<IResult> GetUsers(CancellationToken ct)
         {
+            //try
+            //{
+            //    Console.WriteLine("Request start");
+
+            //    await Task.Delay(3000, ct);
             var users = await _userRepository.GetAllUsersAsync(ct);
+
+            //    Console.WriteLine("Request end");
+
             return Results.Ok(ToUsersResponseDTO(users));
+            //}
+            //catch(OperationCanceledException)
+            //{
+            //    Console.WriteLine("Request cancelled");
+            //    throw;
+            //}
         }
         [HttpGet("{userId}")]
-        public async Task<IResult> GetUsers(Guid userId, CancellationToken ct)
+        public async Task<IResult> GetUser(Guid userId, CancellationToken ct)
         {
+
             var user = await _userRepository.GetUserByIdAsync(userId, ct);
             if (user == null) return Results.NotFound();
             return Results.Ok(ToUserResponseDTO(user));
@@ -77,7 +92,7 @@ namespace Presentation.Controllers
             var user = await _userRepository.GetUserByIdAsync(userId, ct);
             if (user == null) return Results.NotFound(user);
 
-            await _userRepository.DeleteUserByIdAsync(user, ct);
+            _userRepository.DeleteUser(user);
 
             var changed = await _unitOfWork.SaveChangesAsync(ct);
             if (changed == 0) return Results.Problem("Failed to delete user", statusCode: 500);
