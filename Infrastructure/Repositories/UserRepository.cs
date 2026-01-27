@@ -15,10 +15,15 @@ namespace Infrastructure.Repositories
 
         public async Task<bool> DeleteUserByIdAsync(Guid userId, CancellationToken ct = default)
         {
-            var rowAffected = await _db.Users
-                .Where(u => u.Id == userId)
-                .ExecuteDeleteAsync(ct);
-            return rowAffected > 0;
+            //var rowAffected = await _db.Users
+            //    .Where(u => u.Id == userId)
+            //    .ExecuteDeleteAsync(ct); //сразу сохраняет изменения
+            //return rowAffected > 0;
+            var exitstingUser = await _db.Users.FindAsync(userId, ct);
+            if (exitstingUser == null) return false;
+
+            _db.Users.Remove(exitstingUser);
+            return true;
         }
 
         public async Task<List<User>> GetAllUsersAsync(CancellationToken ct = default)
