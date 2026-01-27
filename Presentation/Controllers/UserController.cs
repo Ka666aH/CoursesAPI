@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("users")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -53,10 +53,11 @@ namespace Presentation.Controllers
             return Results.Ok(ToUserResponseDTO(user));
         }
         [HttpPut("{userId}")]
-        public async Task<IResult> UpdateUser([FromBody] UserDTO userDTO, CancellationToken ct)
+        public async Task<IResult> UpdateUser(Guid userId,[FromBody] UserDTO userDTO, CancellationToken ct)
         {
             await _userRepository.UpdateUserAsync(new User
             {
+                Id = userId,
                 Name = userDTO.Name,
                 Email = userDTO.Email,
                 Profile = new UserProfile
@@ -74,7 +75,8 @@ namespace Presentation.Controllers
         [HttpDelete("{userId}")]
         public async Task<IResult> DeleteUser(Guid userId, CancellationToken ct)
         {
-            await _userRepository.DeleteUserByIdAsync(userId, ct);
+            var exitst = await _userRepository.DeleteUserByIdAsync(userId, ct);
+            if(!exitst) return Results.Problem("User is not exist", statusCode: 404);
             var changed = await _unitOfWork.SaveChangesAsync(ct);
             if (changed == 0) return Results.Problem("Failed to delete user", statusCode: 500);
             return Results.NoContent();
