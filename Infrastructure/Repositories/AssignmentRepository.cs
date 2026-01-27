@@ -18,10 +18,9 @@ namespace Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteAssignmentByIdAsync(Guid assignmentId, CancellationToken ct = default)
+        public void DeleteAssignment(Assignment assignment)
         {
-            var rowAffected = await _db.Assignments.Where(a => a.Id == assignmentId).ExecuteDeleteAsync(ct);
-            return rowAffected > 0;
+            _db.Assignments.Remove(assignment);
         }
 
         public async Task<Assignment?> GetAssignmentByIdAsync(Guid assignmentId, CancellationToken ct = default)
@@ -34,12 +33,9 @@ namespace Infrastructure.Repositories
             return await _db.Assignments.AsNoTracking().Where(a => a.ModuleId == moduleId).ToListAsync(ct);
         }
 
-        public async Task<bool> UpdateAssignmentTitleAsync(Guid assignmentId, string newTitle, CancellationToken ct = default)
+        public async Task UpdateAssignmentTitleAsync(Guid assignmentId, string newTitle, CancellationToken ct = default)
         {
-            var rowAffected = await _db.Assignments
-                .Where(a => a.Id == assignmentId)
-                .ExecuteUpdateAsync(a => a.SetProperty(p => p.Title, newTitle), ct);
-            return rowAffected > 0;
+            await _db.Assignments.Where(a => a.Id == assignmentId).ExecuteUpdateAsync(a => a.SetProperty(p => p.Title, newTitle), ct);
         }
     }
 }

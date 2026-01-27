@@ -18,10 +18,9 @@ namespace Infrastructure.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteModuleByIdAsync(Guid moduleId, CancellationToken ct = default)
+        public void DeleteModule(Module module)
         {
-            var rowAffected = await _db.Modules.Where(m => m.Id == moduleId).ExecuteDeleteAsync(ct);
-            return rowAffected > 0;
+            _db.Modules.Remove(module);
         }
 
         public async Task<Module?> GetModuleByIdAsync(Guid moduleId, CancellationToken ct = default)
@@ -34,12 +33,9 @@ namespace Infrastructure.Repositories
             return await _db.Modules.AsNoTracking().Where(m => m.CourseId == courseId).ToListAsync(ct);
         }
 
-        public async Task<bool> UpdateModuleTitleAsync(Guid moduleId, string newTitle, CancellationToken ct = default)
+        public async Task UpdateModuleTitleAsync(Guid moduleId, string newTitle, CancellationToken ct = default)
         {
-            var rowAffected = await _db.Modules
-                .Where(m => m.Id == moduleId)
-                .ExecuteUpdateAsync(m => m.SetProperty(p => p.Title, newTitle), ct);
-            return rowAffected > 0;
+            await _db.Modules.Where(m => m.Id == moduleId).ExecuteUpdateAsync(m => m.SetProperty(p => p.Title, newTitle), ct);
         }
     }
 }

@@ -13,10 +13,9 @@ namespace Infrastructure.Repositories
             await _db.Submissions.AddAsync(submission, ct);
         }
 
-        public async Task<bool> DeleteSubmissionByIdAsync(Guid submissionId, CancellationToken ct = default)
+        public void DeleteSubmission(Submission submission)
         {
-            var rowAffected = await _db.Submissions.Where(s => s.Id == submissionId).ExecuteDeleteAsync(ct);
-            return rowAffected > 0;
+            _db.Submissions.Remove(submission);
         }
 
         public async Task<Submission?> GetSubmissionByIdAsync(Guid submissionId, CancellationToken ct = default)

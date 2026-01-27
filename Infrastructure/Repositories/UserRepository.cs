@@ -13,7 +13,7 @@ namespace Infrastructure.Repositories
             await _db.Users.AddAsync(user, ct);
         }
 
-        public async Task DeleteUserByIdAsync(User user, CancellationToken ct = default)
+        public void DeleteUser(User user)
         {
             _db.Users.Remove(user);
         }

@@ -13,10 +13,9 @@ namespace Infrastructure.Repositories
             await _db.Authorships.AddAsync(authorship, ct);
         }
 
-        public async Task<bool> DeleteAuthorshipByIdAsync(Guid authorshipId, CancellationToken ct = default)
+        public void DeleteAuthorship(Authorship authorship)
         {
-            var rowAffected = await _db.Authorships.Where(a => a.Id == authorshipId).ExecuteDeleteAsync(ct);
-            return rowAffected > 0;
+            _db.Authorships.Remove(authorship);
         }
 
         public async Task<Authorship?> GetAuthorshipByIdAsync(Guid authorshipId, CancellationToken ct = default)

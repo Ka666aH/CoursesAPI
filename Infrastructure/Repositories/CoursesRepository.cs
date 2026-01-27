@@ -14,12 +14,9 @@ namespace Infrastructure.Repositories
             await _db.Courses.AddAsync(course, ct);
         }
 
-        public async Task<bool> DeleteCourseByIdAsync(Guid courseId, CancellationToken ct = default)
+        public void DeleteCourse(Course course)
         {
-            var rowAffected = await _db.Courses
-                .Where(c => c.Id == courseId)
-                .ExecuteDeleteAsync(ct);
-            return rowAffected > 0;
+            _db.Courses.Remove(course);
         }
 
         public async Task<List<Course>> GetAllCoursesAsync(CancellationToken ct = default)
@@ -44,12 +41,9 @@ namespace Infrastructure.Repositories
                 .ToListAsync(ct);
         }
 
-        public async Task<bool> UpdateCourseTitleAsync(Guid courseId, string newTitle, CancellationToken ct = default)
+        public async Task UpdateCourseTitleAsync(Guid courseId, string newTitle, CancellationToken ct = default)
         {
-            var rowAffected = await _db.Courses
-                .Where(c => c.Id == courseId)
-                .ExecuteUpdateAsync(c => c.SetProperty(p => p.Title, newTitle), ct);
-            return rowAffected > 0;
+            await _db.Courses.Where(c => c.Id == courseId).ExecuteUpdateAsync(c => c.SetProperty(p => p.Title, newTitle), ct);
         }
     }
 }
