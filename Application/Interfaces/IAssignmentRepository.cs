@@ -7,6 +7,6 @@ namespace Application.Interfaces
         Task<Assignment?> GetAssignmentByIdAsync(Guid assignmentId, CancellationToken ct = default);
         Task<List<Assignment>> GetAssignmentsByModuleIdAsync(Guid moduleId, CancellationToken ct = default);
         Task UpdateAssignmentTitleAsync(Guid assignmentId,string newTitle, CancellationToken ct = default);
-        Task DeleteAssignmentByIdAsync(Assignment assignment, CancellationToken ct = default);
+        void DeleteAssignment(Assignment assignment);
     }
 }

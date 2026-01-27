@@ -8,6 +8,6 @@ namespace Application.Interfaces
         Task<List<Course>> GetAllCoursesAsync(CancellationToken ct = default);
         Task<List<Course>> GetCoursesByAuthorIdAsync(Guid authorId, CancellationToken ct = default);
         Task UpdateCourseTitleAsync(Guid courseId, string newTitle, CancellationToken ct = default);
-        Task DeleteCourseByIdAsync(Course course, CancellationToken ct = default);
+        void DeleteCourse(Course course);
     }
 }

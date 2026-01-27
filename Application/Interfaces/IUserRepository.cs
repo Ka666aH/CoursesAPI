@@ -7,6 +7,6 @@ namespace Application.Interfaces
         Task<User?> GetUserByIdAsync(Guid userId, CancellationToken ct = default);
         Task<List<User>> GetAllUsersAsync(CancellationToken ct = default);
         Task UpdateUserAsync(User user, UserProfile profile, CancellationToken ct = default);
-        Task DeleteUserByIdAsync(User user, CancellationToken ct = default);
+        void DeleteUser(User user);
     }
 }

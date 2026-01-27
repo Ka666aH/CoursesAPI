@@ -8,6 +8,6 @@ namespace Application.Interfaces
         Task<List<Submission>> GetSubmissionsByAssignmentIdAsync(Guid assignmentId, CancellationToken ct = default);
         Task<List<Submission>> GetSubmissionsByUserIdAsync(Guid userId, CancellationToken ct = default);
         Task<List<Submission>> GetSubmissionsByAssignmentIdAndUserIdAsync(Guid assignmentId, Guid userId, CancellationToken ct = default);
-        Task DeleteSubmissionByIdAsync(Submission submission, CancellationToken ct = default);
+        void DeleteSubmission(Submission submission);
     }
 }
