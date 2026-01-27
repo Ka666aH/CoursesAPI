@@ -13,17 +13,9 @@ namespace Infrastructure.Repositories
             await _db.Users.AddAsync(user, ct);
         }
 
-        public async Task<bool> DeleteUserByIdAsync(Guid userId, CancellationToken ct = default)
+        public async Task DeleteUserByIdAsync(User user, CancellationToken ct = default)
         {
-            //var rowAffected = await _db.Users
-            //    .Where(u => u.Id == userId)
-            //    .ExecuteDeleteAsync(ct); //сразу сохраняет изменения
-            //return rowAffected > 0;
-            var exitstingUser = await _db.Users.FindAsync(userId, ct);
-            if (exitstingUser == null) return false;
-
-            _db.Users.Remove(exitstingUser);
-            return true;
+            _db.Users.Remove(user);
         }
 
         public async Task<List<User>> GetAllUsersAsync(CancellationToken ct = default)
@@ -36,25 +28,12 @@ namespace Infrastructure.Repositories
         public async Task<User?> GetUserByIdAsync(Guid userId, CancellationToken ct = default)
         {
             return await _db.Users
-                .AsNoTracking()
+                //.AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Id == userId, ct);
         }
-        public async Task<bool> UpdateUserAsync(User user, CancellationToken ct = default)
+        public async Task UpdateUserAsync(User user, UserProfile profile, CancellationToken ct = default)
         {
-            //await _db.Users.Where(u => u.Id == user.Id).ExecuteUpdateAsync(u =>
-            //{
-            //    u.SetProperty(p => p.Name, user.Name);
-            //    u.SetProperty(p => p.Email, user.Email);
-            //    u.SetProperty(p => p.Profile, user.Profile); //не работает?
-            //}, ct);
-            var exitstingUser = await _db.Users.FindAsync(user.Id, ct);
-            if (exitstingUser == null) return false;
-
-            exitstingUser.Name = user.Name;
-            exitstingUser.Email = user.Email;
-            exitstingUser.Profile = user.Profile;
-
-            return true;
+            user.Profile = profile;
         }
     }
 }
